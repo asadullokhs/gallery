@@ -3,6 +3,7 @@ const fileUpload = require("express-fileupload");
 const cloudinary = require("cloudinary");
 const mongoose = require("mongoose");
 const dotenv = require("dotenv");
+const cors = require("cors");
 
 dotenv.config();
 
@@ -26,6 +27,7 @@ cloudinary.config({
 });
 
 // middlewear
+app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(fileUpload({ useTempFiles: true }));
