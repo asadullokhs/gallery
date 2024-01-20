@@ -145,22 +145,6 @@ const galleryCtrl = {
 
     res.status(200).send({ message: "Found photos", result });
   },
-  download: async (req, res) => {
-    try {
-      const { id } = req.params;
-
-      const photo = await Gallery.findById(id);
-      if (!photo) {
-        return res.status(404).send({ message: "Not found" });
-      }
-
-      // await photo.updateOne({ $inc: { downloadCount: 1 } });
-
-      res.status(200).download(photo.image.url + "/" + photo.title);
-    } catch (error) {
-      res.status(503).send({ message: error.message });
-    }
-  },
 };
 
 module.exports = galleryCtrl;
