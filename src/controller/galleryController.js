@@ -84,8 +84,6 @@ const galleryCtrl = {
 
       const photo = await Gallery.findById(id);
 
-      console.log(photo);
-
       if (photo) {
         let public_id = photo.image.public_id;
         await cloudinary.v2.uploader.destroy(public_id, async (err) => {
