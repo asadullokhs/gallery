@@ -14,13 +14,13 @@ const removeTemp = (path) => {
 const galleryCtrl = {
   addPhoto: async (req, res) => {
     const { token } = req.headers;
-    if (!token) {
-      return res.status(403).send({ message: "Token is required!" });
-    }
     try {
       const { title } = req.body;
       const { photo } = req.files;
 
+      if (!token) {
+        return res.status(403).send({ message: "Token is required!" });
+      }
       const user = await JWT.decode(token);
 
       const result = await cloudinary.v2.uploader.upload(
