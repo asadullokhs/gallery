@@ -55,15 +55,7 @@ const galleryCtrl = {
     }
   },
   getPhotos: async (req, res) => {
-    const { token } = req.headers;
     try {
-      if (!token) {
-        return res.status(403).send({ message: "Token is required" });
-      }
-
-      const user = JWT.decode(token);
-      const author_id = user._id;
-
       const photos = await Gallery.find();
 
       res.status(200).send({ message: "All photos", photos });
