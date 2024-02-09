@@ -10,6 +10,9 @@ const gallerySchema = new mongoose.Schema(
       type: Object,
       required: true,
     },
+    author: {
+      type: String,
+    },
   },
   { timestamps: true }
 );

@@ -1,6 +1,7 @@
 const Gallery = require("../models/galleryModel");
 const cloudinary = require("cloudinary");
 const fs = require("fs");
+const JWT = require("jsonwebtoken");
 
 const removeTemp = (path) => {
   fs.unlink(path, (err) => {
@@ -12,9 +13,15 @@ const removeTemp = (path) => {
 
 const galleryCtrl = {
   addPhoto: async (req, res) => {
+    const { token } = req.headers;
+    if (!token) {
+      return res.status(403).send({ message: "Token is required!" });
+    }
     try {
       const { title } = req.body;
       const { photo } = req.files;
+
+      const user = await JWT.decode(token);
 
       const result = await cloudinary.v2.uploader.upload(
         photo.tempFilePath,
@@ -34,7 +41,11 @@ const galleryCtrl = {
 
       const image = { url: result.secure_url, public_id: result.public_id };
 
-      const newPhoto = await Gallery.create({ title, image });
+      req.body.author = user._id;
+
+      const author = req.body.author;
+
+      const newPhoto = await Gallery.create({ author, title, image });
 
       res.status(201).send({ message: "Succesfully created", newPhoto });
     } catch (error) {
@@ -43,7 +54,15 @@ const galleryCtrl = {
     }
   },
   getPhotos: async (req, res) => {
+    const { token } = req.headers;
     try {
+      if (!token) {
+        return res.status(403).send({ message: "Token is required" });
+      }
+
+      const user = JWT.decode(token);
+      const author_id = user._id;
+
       const photos = await Gallery.find();
 
       res.status(200).send({ message: "All photos", photos });
@@ -67,7 +86,9 @@ const galleryCtrl = {
         });
 
         await Gallery.findByIdAndDelete(id);
-        res.status(200).send({ message: "Successfully ochirildi", photo });
+        return res
+          .status(200)
+          .send({ message: "Successfully ochirildi", photo });
       }
 
       res.status(200).send({ message: "All photos", photos });
