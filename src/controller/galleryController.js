@@ -83,8 +83,6 @@ const galleryCtrl = {
           .status(200)
           .send({ message: "Successfully ochirildi", photo });
       }
-
-      res.status(200).send({ message: "All photos", photos });
     } catch (error) {
       res.status(503).send(error);
       console.log(error);
