@@ -16,7 +16,7 @@ const galleryCtrl = {
     try {
       const { token } = req.headers;
       const { title } = req.body;
-      const { photo } = req.files;
+      const { photo } = req.files || req.body;
 
       if (!token) {
         return res.status(403).send({ message: "Token is required!" });
