@@ -15,11 +15,7 @@ const app = express();
 const PORT = process.env.PORT || 4002;
 
 // cloudinary
-console.log(
-  process.env.CLOUD_NAME,
-  process.env.CLOUD_API_KEY,
-  process.env.CLOUD_API_SECRET
-);
+
 cloudinary.config({
   cloud_name: process.env.CLOUD_NAME,
   api_key: process.env.CLOUD_API_KEY,
