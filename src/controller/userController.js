@@ -4,8 +4,6 @@ const JWT = require("jsonwebtoken");
 
 const JWT_SECRET_KEY = process.env.JWT_SECRET_KEY;
 
-console.log(JWT_SECRET_KEY);
-
 const userCtrl = {
   login: async (req, res) => {
     const { email, password } = req.body;
